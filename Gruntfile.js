@@ -40,7 +40,17 @@ module.exports = function(grunt) {
       },
       custom_options: {
         options: {
-          closurePath: "test/fixtures/compiler.jar"
+          closurePath: "test/fixtures/compiler.jar",
+          debug: true
+        },
+        files: {
+          'tmp/custom.min.js': ['test/fixtures/first.js', 'test/fixtures/second.js', 'test/fixtures/third.js']
+        }
+      },
+      override_options: {
+        options: {
+          closurePath: "test/fixtures/compiler.jar",
+          override: "--compilation_level WHITESPACE_ONLY --angular_pass"
         },
         files: {
           'tmp/custom.min.js': ['test/fixtures/first.js', 'test/fixtures/second.js', 'test/fixtures/third.js']

@@ -20,8 +20,9 @@ module.exports = function(grunt) {
       SIMPLE = 'SIMPLE',
       ADVANCED = 'ADVANCED',
       // Parameters
-      SRC_FILES = "--js",
-      DEST_FILE = "--js_output_file";
+      COMPILATION_LEVEL = "--compilation_level",
+      SRC_FILES = "js",
+      DEST_FILE = "js_output_file";
 
 
   // TODO: Improve log notifications messages
@@ -42,8 +43,10 @@ module.exports = function(grunt) {
   }
 
   function getParam(key, value){
-    if (typeof value === "string") {
-      return key + " " + value;
+    if (key === "closurePath" || key === "override"){
+      return "";
+    } else if (typeof value === "string") {
+      return "--" + key + " " + value;
     } else if(isArray(value)) {
       return value.join(" ");
     } else if(typeof value === "boolean"){
@@ -56,14 +59,16 @@ module.exports = function(grunt) {
 
     var params = [];
 
-    for(var key in options){
-      params.push(getParam(key, options[key]));
+    if(options.override){
+      params.push(options.override);
+    } else {
+      for(var key in options){
+        params.push(getParam(key, options[key]));
+      }
     }
 
     params.push(getParam(DEST_FILE, dest));
     params.push(getParam(SRC_FILES, src));
-
-    console.log(params.join(" "));
 
     return " " + params.join(" ");
   }
@@ -75,11 +80,12 @@ module.exports = function(grunt) {
 
     var options = this.options({
       closurePath: undefined,
+      override: undefined,
       compilation_level: SIMPLE,
-      accept_const_keyword: undefined,
-      angular_pass: undefined,
-      charset: undefined,
-      debug: undefined
+      accept_const_keyword: false,
+      angular_pass: false,
+      charset: false,
+      debug: false
     });
 
     var compilerPath = getCompilerPath(options);
@@ -94,6 +100,8 @@ module.exports = function(grunt) {
     this.files.forEach(function(f) {
 
       var cmd = 'java -jar ' + compilerPath + getAllParams(options, f.src, f.dest);
+
+      console.log(cmd);
 
       // Make sure path to file exists
       grunt.file.write(f.dest, '');
