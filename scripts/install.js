@@ -7,8 +7,8 @@ var DecompressZip = require('decompress-zip');
 var packageDir = path.resolve(__dirname, '..');
 
 var compilerVersion = '20150126';
-var compilerTarFilePath = path.resolve(packageDir, 'compiler', 'compiler.tar.gz');
-var compilerTarFile = fs.createWriteStream(compilerTarFilePath);
+var compilerZipFilePath = path.resolve(packageDir, 'compiler', 'compiler.zip');
+var compilerZipFile = fs.createWriteStream(compilerZipFilePath);
 var url = 'http://dl.google.com/closure-compiler/compiler-' + compilerVersion + '.zip';
 
 
@@ -21,7 +21,7 @@ var reqData = {
 
 var request = http.get(url, function(res) {
 
-  res.pipe(compilerTarFile);
+  res.pipe(compilerZipFile);
 
   var len = parseInt(res.headers['content-length'], 10);
 
@@ -40,7 +40,7 @@ var request = http.get(url, function(res) {
 
     console.log('');
 
-    var unzipper = new DecompressZip(compilerTarFilePath);
+    var unzipper = new DecompressZip(compilerZipFilePath);
 
     unzipper.on('error', function (err) {
         console.log('Caught an error', err);
@@ -49,7 +49,7 @@ var request = http.get(url, function(res) {
     unzipper.on('extract', function (log) {
       console.log('Finished extracting');
       console.log('');
-      fs.unlinkSync(compilerTarFilePath);
+      fs.unlinkSync(compilerZipFilePath);
     });
 
     unzipper.on('progress', function (fileIndex, fileCount) {

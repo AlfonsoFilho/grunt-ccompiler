@@ -41,7 +41,7 @@ module.exports = function(grunt) {
   }
 
   function getParam(key, value){
-    if (key === "closurePath" || key === "override"){
+    if (key === "override"){
       return "";
     } else if (typeof value === "string") {
       return "--" + key + " " + value;
@@ -89,7 +89,6 @@ module.exports = function(grunt) {
     var done = this.async();
 
     var options = this.options({
-      closurePath: undefined,
       override: undefined,
       compilation_level: SIMPLE,
       accept_const_keyword: false,
@@ -99,7 +98,7 @@ module.exports = function(grunt) {
       source_map_format: 'V3'
     });
 
-    var compilerPath = path.resolve('compiler', 'compiler.jar')
+    var compilerPath = path.resolve(__dirname, '..', 'compiler', 'compiler.jar')
 
     // If compiler path is not defined, exit task
     if (!compilerPath) {
@@ -138,7 +137,7 @@ module.exports = function(grunt) {
 
 CLOSURE COMPILER HELP
 
- --accept_const_keyword                 : Allows usage of const keyword.
+--accept_const_keyword                 : Allows usage of const keyword.
  --angular_pass                         : Generate $inject properties for
                                           AngularJS for functions annotated
                                           with @ngInject
@@ -274,12 +273,14 @@ CLOSURE COMPILER HELP
                                           sources conform. Options: ECMASCRIPT3
                                           (default), ECMASCRIPT5, ECMASCRIPT5_ST
                                           RICT, ECMASCRIPT6 (experimental),
-                                          ECMASCRIPT6_STRICT (experimental)
+                                          ECMASCRIPT6_STRICT (experimental),
+                                          ECMASCRIPT6_TYPED (experimental)
  --language_out VAL                     : Sets what language spec the output
                                           should conform to.  If omitted,
                                           defaults to the value of language_in.
                                           Options: ECMASCRIPT3, ECMASCRIPT5,
-                                          ECMASCRIPT5_STRICT
+                                          ECMASCRIPT5_STRICTECMASCRIPT6_TYPED
+                                          (experimental)
  --logging_level VAL                    : The logging level (standard java.util.
                                           logging.Level values) for Compiler
                                           progress. Does not control errors or
@@ -303,8 +304,11 @@ CLOSURE COMPILER HELP
                                           listed in the corresponding order.
                                           Where --module flags occur in
                                           relation to --js flags is unimportant.
-                                          Provide the value 'auto' to trigger
-                                          module creation from CommonJSmodules.
+                                          <num-js-files> may be set to 'auto'
+                                          for the first module if it has no
+                                          dependencies. Provide the value
+                                          'auto' to trigger module creation
+                                          from CommonJSmodules.
  --module_output_path_prefix VAL        : Prefix for filenames of compiled JS
                                           modules. <module-name>.js will be
                                           appended to this prefix. Directories
@@ -356,7 +360,7 @@ CLOSURE COMPILER HELP
  --process_closure_primitives           : Processes built-ins from the Closure
                                           library, such as goog.require(),
                                           goog.provide(), and goog.exportSymbol(
-                                          )
+                                          ). True by default.
  --process_common_js_modules            : Process CommonJS modules to a
                                           concatenable form.
  --process_jquery_primitives            : Processes built-ins from the Jquery
@@ -405,9 +409,8 @@ CLOSURE COMPILER HELP
                                           should be excluded
  --use_types_for_optimization           : Experimental: perform additional
                                           optimizations based on available
-                                          information.  Inaccurate type
-                                          annotations may result in incorrect
-                                          results.
+                                          information. Inaccurate type annotatio
+                                          ns may result in incorrect results.
  --variable_renaming_report VAL         : File where the serialized version of
                                           the variable renaming map produced
                                           should be saved

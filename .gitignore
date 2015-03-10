@@ -1,7 +1,7 @@
 node_modules
 npm-debug.log
 tmp
-compiler/
+compiler/compiler.jar
 # Created by https://www.gitignore.io
 
 ### SublimeText ###
