@@ -14,6 +14,7 @@ module.exports = function(grunt) {
   // creation: http://gruntjs.com/creating-tasks
 
   var shell = require('shelljs'),
+      path = require('path'),
 
       // Compilation levels
       WHITESPACE_ONLY = 'WHITESPACE_ONLY',
@@ -22,7 +23,8 @@ module.exports = function(grunt) {
       // Parameters
       COMPILATION_LEVEL = "--compilation_level",
       SRC_FILES = "js",
-      DEST_FILE = "js_output_file";
+      DEST_FILE = "js_output_file",
+      SOURCE_MAP = "create_source_map";
 
 
   // TODO: Improve log notifications messages
@@ -67,10 +69,22 @@ module.exports = function(grunt) {
       }
     }
 
+    console.log(dest);
+
+    params.push(getParam(SOURCE_MAP, dest.replace('.js', '.js.map')));
+
     params.push(getParam(DEST_FILE, dest));
     params.push(getParam(SRC_FILES, src));
 
+
+
     return " " + params.join(" ");
+  }
+
+  function addSourceMapComment(file){
+    var comment = '//# sourceMappingURL=' + path.basename(file, '.js') + '.js.map';
+    var content = grunt.file.read(file) + comment;
+    grunt.file.write(file, content);
   }
 
 
@@ -85,7 +99,8 @@ module.exports = function(grunt) {
       accept_const_keyword: false,
       angular_pass: false,
       charset: false,
-      debug: false
+      debug: false,
+      source_map_format: 'V3'
     });
 
     var compilerPath = getCompilerPath(options);
@@ -107,6 +122,8 @@ module.exports = function(grunt) {
       grunt.file.write(f.dest, '');
 
       var result = shell.exec(cmd).output;
+
+      addSourceMapComment(f.dest);
 
       if(result){
         logSuccess(f.dest + " created!");
