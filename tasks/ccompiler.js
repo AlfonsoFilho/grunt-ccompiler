@@ -65,8 +65,6 @@ module.exports = function(grunt) {
       }
     }
 
-    console.log(dest);
-
     params.push(getParam(SOURCE_MAP, dest.replace('.js', '.js.map')));
 
     params.push(getParam(DEST_FILE, dest));
@@ -95,7 +93,8 @@ module.exports = function(grunt) {
       angular_pass: false,
       charset: false,
       debug: false,
-      source_map_format: 'V3'
+      source_map_format: 'V3',
+      log: true
     });
 
     var compilerPath = path.resolve(__dirname, '..', 'compiler', 'compiler.jar')
@@ -123,6 +122,12 @@ module.exports = function(grunt) {
       if(result){
         logSuccess(f.dest + " created!");
         console.log(result);
+
+        var logPath = path.resolve('.', 'closure.log');
+        var logContent = grunt.file.exists(logPath) ? grunt.file.read(logPath) : '';
+        logContent = logContent + result;
+
+        grunt.file.write(path.resolve('.', 'closure.log'), logContent);
       }
 
     });
