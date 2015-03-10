@@ -58,6 +58,16 @@ module.exports = function(grunt) {
       }
     },
 
+    'release-it': {
+      options: {
+        pkgFiles: ['package.json'],
+        commitMessage: 'Release %s',
+        tagName: '%s',
+        tagAnnotation: 'Release %s',
+        buildCommand: false
+      }
+    }
+
     // Unit tests.
     nodeunit: {
       tests: ['test/*_test.js']
@@ -72,6 +82,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-release-it');
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
