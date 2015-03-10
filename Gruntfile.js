@@ -31,29 +31,18 @@ module.exports = function(grunt) {
     ccompiler: {
       default_options: {
         options: {
-          closurePath: "test/fixtures/compiler.jar",
           compilation_level: "ADVANCED"
         },
         files: {
-          'tmp/default.min.js': ['test/fixtures/first.js', 'test/fixtures/second.js', 'test/fixtures/third.js']
+          'tmp/default_options.min.js': ['test/fixtures/first.js', 'test/fixtures/second.js']
         }
       },
-      custom_options: {
+      simple_options: {
         options: {
-          closurePath: "test/fixtures/compiler.jar",
-          debug: true
+          compilation_level: "SIMPLE"
         },
         files: {
-          'tmp/custom.min.js': ['test/fixtures/first.js', 'test/fixtures/second.js', 'test/fixtures/third.js']
-        }
-      },
-      override_options: {
-        options: {
-          closurePath: "test/fixtures/compiler.jar",
-          override: "--compilation_level WHITESPACE_ONLY --angular_pass"
-        },
-        files: {
-          'tmp/custom.min.js': ['test/fixtures/first.js', 'test/fixtures/second.js', 'test/fixtures/third.js']
+          'tmp/simple_options.min.js': ['test/fixtures/first.js', 'test/fixtures/second.js']
         }
       }
     },
@@ -66,7 +55,7 @@ module.exports = function(grunt) {
         tagAnnotation: 'Release %s',
         buildCommand: false
       }
-    }
+    },
 
     // Unit tests.
     nodeunit: {

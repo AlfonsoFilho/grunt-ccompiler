@@ -36,10 +36,6 @@ module.exports = function(grunt) {
     grunt.log.ok(msg.green);
   }
 
-  function getCompilerPath (option) {
-    return option.closurePath || process.env.CLOSURE_PATH || false;
-  }
-
   function isArray(value) {
     return Array.isArray(value);
   }
@@ -103,7 +99,7 @@ module.exports = function(grunt) {
       source_map_format: 'V3'
     });
 
-    var compilerPath = getCompilerPath(options);
+    var compilerPath = path.resolve('compiler', 'compiler.jar')
 
     // If compiler path is not defined, exit task
     if (!compilerPath) {
