@@ -94,7 +94,7 @@ module.exports = function(grunt) {
       charset: false,
       debug: false,
       source_map_format: 'V3',
-      log: true
+      log: false
     });
 
     var compilerPath = path.resolve(__dirname, '..', 'compiler', 'compiler.jar')

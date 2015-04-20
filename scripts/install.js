@@ -6,7 +6,7 @@ var DecompressZip = require('decompress-zip');
 
 var packageDir = path.resolve(__dirname, '..');
 
-var compilerVersion = '20150126';
+var compilerVersion = '20150315';
 var compilerZipFilePath = path.resolve(packageDir, 'compiler', 'compiler.zip');
 var compilerZipFile = fs.createWriteStream(compilerZipFilePath);
 var url = 'http://dl.google.com/closure-compiler/compiler-' + compilerVersion + '.zip';
